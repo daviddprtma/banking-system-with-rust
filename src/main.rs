@@ -39,20 +39,7 @@ fn main() -> Result<()> {
             let mut new_account = AccountNumber::default();
 
             let db = database::initialise_bankdb()?;
-            loop {
-                let query_string = format!(
-                    "SELECT 1 FROM account where account_number='{}';",
-                    new_account
-                );
-
-                match db.query_row(&query_string, [], |row| row.get::<usize, usize>(0)) {
-                    Ok(_) => {
-                        new_account = AccountNumber::default();
-                    }
-                    Err(_) => break,
-                }
-            }
-
+            
             let _ = database::create_account(&new_account, 0);
 
             let query_string = format!(
